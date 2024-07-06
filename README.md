@@ -31,6 +31,10 @@
 ## Install Env Docker
 
 ```bash
+$ cp .env.local .env
+```
+
+```bash
 $ docker compose -f docker-compose.yml up -d
 ```
 

@@ -1,0 +1,46 @@
+services:
+  postgres-staging:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: aaa123
+      POSTGRES_DB: postgresql-staging
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  rabbitmq-staging:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: aaa123
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq
+    networks:
+      - backend
+
+  redis-staging:
+    image: redis:latest
+    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass aaa123
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  pg_data:
+  rabbit_data:
+  redis_data:
